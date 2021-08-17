@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html::head">
+</head>
+<body>
+<div class="container">
+
+
+
+    <div class="py-5 text-center">
+        <h3>회원가입</h3>
+    </div>
+    <div class="row justify-content-center">
+
+        <form class="col-6" th:action="@{/sign-up}" th:object="${signUpForm}" method="post">
+            <div>
+                <label for="email">이메일</label>
+                <input type="text" id="email" th:field="*{email}" class="form-control" placeholder="이메일을 입력하세요.">
+            </div>
+            <div>
+                <label for="nickname">닉네임</label>
+                <input type="text" id="nickname" th:field="*{nickname}" class="form-control" placeholder="닉네임을 입력하세요.">
+            </div>
+            <div>
+                <label for="password">패스워드</label>
+                <input type="password" id="password" th:field="*{password}" class="form-control" placeholder="패스워드를 입력하세요.">
+            </div>
+
+            <hr class="my-4">
+
+            <div class="row text-center">
+
+                <div class="col">
+                    <input class="btn btn-primary" type="submit" value="Submit">
+                    <input class="btn btn-outline-secondary" type="button" value="Cancel"
+                           th:onclick="|location.href='@{/}'|">
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+<footer th:replace="fragments.html::footer" >
+</footer>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <title>used-market</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <style>
+        .container {
+            max-width: 100%;
+        }
+
+        .field-error {
+            border-color: crimson;
+            color: crimson;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 0;
+            height: 50px; width:100%; text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<footer th:fragment="footer" class="footer">
+    <span class="text-muted">@ 2021 Copyright</span>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+            crossorigin="anonymous"></script>
+</footer>
+</body>
+</html>

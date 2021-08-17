@@ -1,5 +1,6 @@
-package com.kisnahc.usedmarket.usedmarket.domain;
+package com.kisnahc.usedmarket.usedmarket.domain.member;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -30,4 +31,13 @@ public class Member {
     private boolean emailVerified;
 
     private String emailCheckToken;
+
+    @Builder
+    public Member(String email, String nickname, String password, boolean emailVerified, String emailCheckToken) {
+        this.email = email;
+        this.nickname = nickname;
+        this.password = password;
+        this.emailVerified = emailVerified;
+        this.emailCheckToken = emailCheckToken;
+    }
 }
