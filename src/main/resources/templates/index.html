@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragments.html::head">
 </head>
 <body>
+<nav th:replace="fragments.html::main-nav"></nav>
 <div class="container">
     <div class="py-5 text-center">
         <h3>MainPage</h3>
+        <h4><span sec:authentication="name">username</span>님. 환영합니다.</h4>
     </div>
 </div>
 <footer th:replace="fragments.html::footer" >
