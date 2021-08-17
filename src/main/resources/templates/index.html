@@ -7,8 +7,15 @@
 <nav th:replace="fragments.html::main-nav"></nav>
 <div class="container">
     <div class="py-5 text-center">
+        <div class="alert alert-warning text-center" role="alert"
+             th:if="${member != null && !member.emailVerified}">
+            회원가입을 완료하려면,
+            <a th:href="@{/check-email}" class="alert-link">
+                계정 인증 이메일을 확인하세요.
+            </a>
+        </div>
         <h3>MainPage</h3>
-        <h4><span sec:authentication="name">username</span>님. 환영합니다.</h4>
+        <h4><span sec:authentication="name"></span>님. 환영합니다.</h4>
     </div>
 </div>
 <footer th:replace="fragments.html::footer" >

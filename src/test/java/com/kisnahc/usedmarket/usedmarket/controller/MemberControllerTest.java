@@ -2,6 +2,7 @@ package com.kisnahc.usedmarket.usedmarket.controller;
 
 import com.kisnahc.usedmarket.usedmarket.domain.member.Member;
 import com.kisnahc.usedmarket.usedmarket.domain.member.MemberRepository;
+import com.kisnahc.usedmarket.usedmarket.domain.member.MemberService;
 import com.kisnahc.usedmarket.usedmarket.web.form.SignUpForm;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -12,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.constraints.AssertTrue;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -28,6 +28,7 @@ class MemberControllerTest {
 
     @Autowired
     private MemberRepository memberRepository;
+
 
     @DisplayName("회원가입 뷰 테스트")
     @Test
@@ -53,5 +54,39 @@ class MemberControllerTest {
         Assertions.assertThat(findMember.getEmail()).isEqualTo("memberA@naver.com");
 
         Assertions.assertThat(findMember.getPassword()).isNotEqualTo("1234qwer");
+    }
+
+    @DisplayName("회원가입 인증 이메일 - 실패")
+    @Test
+    public void sendEmailCheckTokenFail() throws Exception {
+        mockMvc.perform(get("/check-email-token")
+                .param("token", "123123")
+                .param("email", "email"))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("error"))
+                .andExpect(view().name("mail/checked-email"));
+
+
+    }
+
+    @DisplayName("회원가입 인증 이메일 - 성공")
+    @Test
+    public void sendEmailCheckToken() throws Exception {
+        Member member = Member.builder()
+                .email("mameberA@naver.com")
+                .nickname("memberA")
+                .password("12341234")
+                .build();
+        Member saveMember = memberRepository.save(member);
+        saveMember.generateEmailToken();
+
+        mockMvc.perform(get("/check-email-token")
+                .param("token", saveMember.getEmailCheckToken())
+                .param("email", saveMember.getEmail()))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeDoesNotExist("error"))
+                .andExpect(model().attributeExists("nickname"))
+                .andExpect(view().name("mail/checked-email"));
+
     }
 }

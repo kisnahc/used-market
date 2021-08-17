@@ -2,11 +2,11 @@ package com.kisnahc.usedmarket.usedmarket.controller;
 
 import com.kisnahc.usedmarket.usedmarket.domain.member.Member;
 import com.kisnahc.usedmarket.usedmarket.domain.member.MemberRepository;
+import com.kisnahc.usedmarket.usedmarket.domain.member.MemberService;
 import com.kisnahc.usedmarket.usedmarket.web.form.SignUpForm;
 import com.kisnahc.usedmarket.usedmarket.web.validation.SignUpFormValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,8 +23,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class MemberController {
 
     private final MemberRepository memberRepository;
-    private final PasswordEncoder passwordEncoder;
     private final SignUpFormValidator signUpFormValidator;
+    private final MemberService memberService;
 
     @InitBinder("signUpForm")
     public void initBinder(WebDataBinder dataBinder) {
@@ -44,14 +44,25 @@ public class MemberController {
             log.info("errors={}", bindingResult.hasErrors());
             return "members/sign-up";
         }
-        Member saveMember = Member.builder()
-                .email(form.getEmail())
-                .nickname(form.getNickname())
-                .password(passwordEncoder.encode(form.getPassword()))
-                .emailVerified(false)
-                .build();
-
-        memberRepository.save(saveMember);
+        memberService.processNewMember(form);
         return "redirect:/";
     }
+
+    @GetMapping("/check-email-token")
+    public String checkEmailToken(String email, String token, Model model) {
+        Member findMember = memberRepository.findByEmail(email);
+        String view = "mail/checked-email";
+        if (findMember == null) {
+            model.addAttribute("error", "wrong.email");
+            return view;
+        }
+        if (!findMember.isValidToken(token)) {
+            model.addAttribute("error", "wrong.token");
+            return view;
+        }
+        memberService.completeSignUp(findMember);
+        model.addAttribute("nickname", findMember.getNickname());
+        return view;
+    }
+
 }

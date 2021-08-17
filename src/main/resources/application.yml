@@ -1,0 +1,27 @@
+spring:
+  profiles:
+    active: local
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+  mail:
+    host: smtp.gmail.com
+    username: dev.kisnahc@gmail.com
+    password: fwmlfewwalxabjms
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
+logging:
+  level:
+    org.hibernate.SQL: debug
+app:
+  host: http://localhost:8080
