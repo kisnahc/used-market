@@ -2,8 +2,6 @@ package com.kisnahc.usedmarket.usedmarket.controller;
 
 import com.kisnahc.usedmarket.usedmarket.domain.member.Member;
 import com.kisnahc.usedmarket.usedmarket.domain.member.MemberRepository;
-import com.kisnahc.usedmarket.usedmarket.domain.member.MemberService;
-import com.kisnahc.usedmarket.usedmarket.web.form.SignUpForm;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -36,7 +36,8 @@ class MemberControllerTest {
         mockMvc.perform(get("/sign-up"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("members/sign-up"))
-                .andExpect(model().attributeExists("signUpForm"));
+                .andExpect(model().attributeExists("signUpForm"))
+                .andExpect(unauthenticated());
     }
 
     @DisplayName("회원가입 - 성공")
@@ -48,11 +49,12 @@ class MemberControllerTest {
                 .param("password", "1234qwer")
                 .with(csrf()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/"));
+                .andExpect(view().name("redirect:/"))
+        .andExpect(authenticated());
 
         Member findMember = memberRepository.findByEmail("memberA@naver.com");
         Assertions.assertThat(findMember.getEmail()).isEqualTo("memberA@naver.com");
-
+        Assertions.assertThat(findMember.getEmailCheckToken()).isNotNull();
         Assertions.assertThat(findMember.getPassword()).isNotEqualTo("1234qwer");
     }
 
@@ -64,7 +66,8 @@ class MemberControllerTest {
                 .param("email", "email"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("error"))
-                .andExpect(view().name("mail/checked-email"));
+                .andExpect(view().name("mail/checked-email"))
+                .andExpect(unauthenticated());
 
 
     }
@@ -86,7 +89,8 @@ class MemberControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(model().attributeDoesNotExist("error"))
                 .andExpect(model().attributeExists("nickname"))
-                .andExpect(view().name("mail/checked-email"));
+                .andExpect(view().name("mail/checked-email"))
+                .andExpect(authenticated());
 
     }
 }

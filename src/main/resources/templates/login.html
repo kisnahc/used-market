@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments.html::head">
+</head>
+<body>
+<nav th:replace="fragments.html::main-nav"></nav>
+<div class="container">
+
+    <div class="py-5 text-center">
+        <h3>로그인</h3>
+    </div>
+    <div class="row justify-content-center">
+
+        <div class="alert alert-danger" role="alert" th:if="${param.error}">
+            <p>이메일(또는 닉네임)과 패스워드가 정확하지 않습니다.</p>
+            <p>기억이 나지 않으시면, <a th:href="@{/find-password}">패스워드 찾기</a>를 눌러주세요.</p>
+        </div>
+        <form class="col-sm-6" th:action="@{/login}" method="post">
+            <div class="form-group">
+                <hr class="my-4">
+                <label for="username">Email or Nickname</label>
+                <input id="username" type="text" name="username" class="form-control"
+                       placeholder="email or nickname" aria-describedby="emailHelp"/>
+                <small id="emailHelp" class="form-text text-muted">
+                    이메일 또는 닉네임을 입력하세요.
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input id="password" type="password" name="password" class="form-control"
+                       aria-describedby="passwordHelp"/>
+                <small id="passwordHelp" class="form-text text-muted">
+                    패스워드가 기억이 나지 않는다면, <a th:href="@{/email-login}">패스워드 없이 로그인하기</a>
+                </small>
+                <small class="invalid-feedback">패스워드를 입력하세요.</small>
+            </div>
+
+            <div class="form-control form-check">
+                <input type="checkbox" class="form-check-input" id="rememberMe" name="remember-me" checked>
+                <label class="form-check-label" for="rememberMe" aria-describedby="rememberMeHelp">로그인 유지</label>
+            </div>
+
+            <hr class="my-4">
+            <div class="text-center">
+                <input class="btn btn-outline-primary" type="submit" value="Login">
+                <input class="btn btn-outline-dark"
+                       th:onclick="|location.href='@{/}'|"
+                       type="button" value="Cancel">
+            </div>
+        </form>
+        <hr class="my-4">
+    </div>
+</div>
+<footer th:replace="fragments.html::footer">
+</footer>
+</body>
+</html>

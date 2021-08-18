@@ -51,13 +51,10 @@
             <div class="dropdown" sec:authorize="isAuthenticated()">
                 <a class="btn btn-outline-primary dropdown-toggle" role="button" id="userDropdown"
                    data-bs-toggle="dropdown" aria-expanded="false">
+                        <span sec:authentication="name">username</span>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <h6 class="dropdown-header">
-                        <span sec:authentication="name">username</span>
-                    </h6>
-                    <li><a class="dropdown-item" th:href="@{'/profile/' + ${#authentication.name}}">프로필</a></li>
-                    <li><a class="dropdown-item" href="#">스터디</a></li>
+                    <li><a class="dropdown-item" th:href="@{'/members/' + ${#authentication.name}}">프로필</a></li>
                     <div class="dropdown-divider"></div>
                     <li><a class="dropdown-item" href="#">설정</a></li>
                     <form class="form-inline my-2 my-lg-0" th:action="@{/logout}" method="post">

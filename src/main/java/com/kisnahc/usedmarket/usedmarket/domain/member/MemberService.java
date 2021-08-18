@@ -6,17 +6,25 @@ import com.kisnahc.usedmarket.usedmarket.mail.EmailService;
 import com.kisnahc.usedmarket.usedmarket.web.form.SignUpForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import java.util.List;
+
 @Slf4j
 @Transactional
 @RequiredArgsConstructor
 @Service
-public class MemberService {
+public class MemberService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
@@ -36,6 +44,7 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
+
     public Member processNewMember(SignUpForm form) {
         Member saveMember = createMember(form);
         sendSignUpCheckEmail(saveMember);
@@ -44,8 +53,8 @@ public class MemberService {
 
     public void sendSignUpCheckEmail(Member member) {
         Context context = new Context();
-        context.setVariable("link", "/check-email-token?token=" +
-                member.getEmailCheckToken() + "&email=" + member.getEmail());
+        context.setVariable("link", "/check-email-token?token=" + member.getEmailCheckToken() +
+                "&email=" + member.getEmail());
         context.setVariable("nickname", member.getNickname());
         context.setVariable("linkName", "회원가입 이메일 인증");
         context.setVariable("text", "회원가입을 완료하려면 링크를 클릭하세요.");
@@ -65,5 +74,26 @@ public class MemberService {
 
     public void completeSignUp(Member member) {
         member.completeSignUp();
+    }
+
+    public void login(Member member) {
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+                //AuthenticationPrincipal
+                new LoginMember(member),
+                member.getPassword(),
+                List.of(new SimpleGrantedAuthority("ROLE_MEMBER")));
+        SecurityContextHolder.getContext().setAuthentication(token);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String emailOrNickname) throws UsernameNotFoundException {
+        Member findMember = memberRepository.findByEmail(emailOrNickname);
+        if (findMember == null) {
+            findMember = memberRepository.findByNickname(emailOrNickname);
+        }
+        if (findMember == null) {
+            throw new UsernameNotFoundException(emailOrNickname);
+        }
+        return new LoginMember(findMember);
     }
 }

@@ -44,12 +44,13 @@ public class MemberController {
             log.info("errors={}", bindingResult.hasErrors());
             return "members/sign-up";
         }
-        memberService.processNewMember(form);
+        Member member = memberService.processNewMember(form);
+        memberService.login(member);
         return "redirect:/";
     }
 
     @GetMapping("/check-email-token")
-    public String checkEmailToken(String email, String token, Model model) {
+    public String checkEmailToken(String token, String email, Model model) {
         Member findMember = memberRepository.findByEmail(email);
         String view = "mail/checked-email";
         if (findMember == null) {
@@ -61,8 +62,10 @@ public class MemberController {
             return view;
         }
         memberService.completeSignUp(findMember);
+        memberService.login(findMember);
         model.addAttribute("nickname", findMember.getNickname());
         return view;
     }
+
 
 }
