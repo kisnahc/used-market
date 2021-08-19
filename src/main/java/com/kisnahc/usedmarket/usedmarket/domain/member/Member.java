@@ -1,5 +1,7 @@
 package com.kisnahc.usedmarket.usedmarket.domain.member;
 
+import com.kisnahc.usedmarket.usedmarket.domain.BaseTimeEntity;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,9 +15,9 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Member {
+public class Member extends BaseTimeEntity {
 
     @Id
     @GeneratedValue
