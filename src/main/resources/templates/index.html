@@ -10,7 +10,7 @@
         <div class="alert alert-warning text-center" role="alert"
              th:if="${member != null && !member.emailVerified}">
             회원가입을 완료하려면,
-            <a th:href="@{/check-email}" class="alert-link">
+            <a th:href="@{/mail/check-email}" class="alert-link">
                 계정 인증 이메일을 확인하세요.
             </a>
         </div>

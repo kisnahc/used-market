@@ -5,15 +5,15 @@
 <body>
 <nav th:replace="fragments.html::main-nav"></nav>
 <div class="container">
-    <div class="py-5 text-center" th:if="${error}">
-       <p class="lead">회원가입 이메일 인증.</p>
+    <div class="py-5 text-center" th:if="${error != null}">
+        <p class="lead">회원가입 이메일 인증.</p>
         <div class="alert alert-danger" role="alert" th:text="${error}"></div>
+        <p class="lead" th:text="${email}"></p>
     </div>
-
     <div class="py-5 text-center" th:if="${error == null}">
         <p class="lead">회원가입 이메일 인증.</p>
-        <h3>이메일 인증을 완료했습니다. <span th:text="${nickname}">님 가입을 환영합니다.</span></h3>
-        <h6>이제부터 가입할 때 사용한 이메일 또는 닉네임과 패스워스로 로그인을 할 수 있습니다.</h6>
+        <h3>회원가입을 완료하고 서비스를 이용하려면 이메일 인증을 완료하세요.</h3>
+        <p class="lead" th:text="${email}">your@email.com</p>
     </div>
 </div>
 <footer th:replace="fragments.html::footer" >

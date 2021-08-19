@@ -85,6 +85,7 @@ public class MemberService implements UserDetailsService {
         SecurityContextHolder.getContext().setAuthentication(token);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String emailOrNickname) throws UsernameNotFoundException {
         Member findMember = memberRepository.findByEmail(emailOrNickname);

@@ -1,5 +1,6 @@
 package com.kisnahc.usedmarket.usedmarket.controller;
 
+import com.kisnahc.usedmarket.usedmarket.domain.member.CurrentMember;
 import com.kisnahc.usedmarket.usedmarket.domain.member.Member;
 import com.kisnahc.usedmarket.usedmarket.domain.member.MemberRepository;
 import com.kisnahc.usedmarket.usedmarket.domain.member.MemberService;
@@ -67,5 +68,9 @@ public class MemberController {
         return view;
     }
 
-
+    @GetMapping("/mail/check-email")
+    public String checkEmail(@CurrentMember Member member, Model model) {
+        model.addAttribute("email", member.getEmail());
+        return "mail/check-email";
+    }
 }
