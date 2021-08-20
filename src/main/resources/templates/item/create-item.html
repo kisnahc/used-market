@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments.html::head">
+</head>
+<body>
+<nav th:replace="fragments.html::main-nav"></nav>
+<div class="container">
+
+    <div class="py-5 text-center">
+        <h3>상품 등록하기</h3>
+        <hr class="my-4">
+    </div>
+
+    <div class="row justify-content-center">
+        <form class="col-6" th:action="@{/create-item}" th:object="${createPostsForm}" method="post">
+            <div th:if="${#fields.hasGlobalErrors()}">
+                <p class="field-error" th:each="err : ${#fields.globalErrors()}"
+                   th:text="${err}">전체 오류 메시지</p></div>
+
+            <label for="title" class="form-label">제목</label>
+            <input class="form-control" type="text" th:field="*{title}" id="title">
+
+            <label for="price" class="form-label">가격</label>
+            <input class="form-control" id="price" th:field="*{price}"
+                   th:text="${#numbers.formatCurrency(createPostsForm.price)}">
+
+            <label for="description" class="form-label">내용</label>
+            <textarea class="form-control" th:field="*{description}"
+                      id="description" rows="5"></textarea>
+
+            <label for="uploadImages" class="form-label">이미지 추가하기</label>
+            <input class="form-control" type="file" th:field="*{images}"
+                   id="uploadImages" multiple="multiple">
+
+            <hr class="my-4">
+            <div class="text-center">
+                <input class="btn btn-outline-primary" type="submit" value="Submit">
+                <input class="btn btn-outline-dark"
+                       th:onclick="|location.href='@{/}'|"
+                       type="button" value="Cancel">
+            </div>
+
+        </form>
+    </div>
+
+
+
+
+
+
+
+</div>
+<footer th:replace="fragments.html::footer" >
+</footer>
+</body>
+</html>

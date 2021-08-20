@@ -1,17 +1,17 @@
 package com.kisnahc.usedmarket.usedmarket.domain.member;
 
 import com.kisnahc.usedmarket.usedmarket.domain.BaseTimeEntity;
+import com.kisnahc.usedmarket.usedmarket.domain.item.Item;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -37,6 +37,10 @@ public class Member extends BaseTimeEntity {
     private String emailCheckToken;
 
     private LocalDateTime emailCheckTokenGeneratedAt;
+
+    @OneToMany(mappedBy = "member")
+    private List<Item> items = new ArrayList<>();
+
 
     @Builder
     public Member(String email, String nickname, String password, boolean emailVerified, String emailCheckToken) {
