@@ -73,4 +73,5 @@ public class MemberController {
         model.addAttribute("email", member.getEmail());
         return "mail/check-email";
     }
+
 }

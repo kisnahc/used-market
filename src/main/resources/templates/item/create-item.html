@@ -13,7 +13,7 @@
     </div>
 
     <div class="row justify-content-center">
-        <form class="col-6" th:action="@{/create-item}" th:object="${createPostsForm}" method="post">
+        <form class="col-6" th:action="@{/create-item}" th:object="${createItemForm}" method="post">
             <div th:if="${#fields.hasGlobalErrors()}">
                 <p class="field-error" th:each="err : ${#fields.globalErrors()}"
                    th:text="${err}">전체 오류 메시지</p></div>
@@ -23,7 +23,7 @@
 
             <label for="price" class="form-label">가격</label>
             <input class="form-control" id="price" th:field="*{price}"
-                   th:text="${#numbers.formatCurrency(createPostsForm.price)}">
+                   th:text="${#numbers.formatInteger(createItemForm.price, 0, 'COMMA')}">
 
             <label for="description" class="form-label">내용</label>
             <textarea class="form-control" th:field="*{description}"

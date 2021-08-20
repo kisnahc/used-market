@@ -22,7 +22,7 @@ public class Item extends BaseTimeEntity {
 
     private String title;
 
-    private String price;
+    private Integer price;
 
     private String description;
 
@@ -30,7 +30,7 @@ public class Item extends BaseTimeEntity {
     private Member member;
 
     @Builder
-    public Item(String title, String price, String description, Member member) {
+    public Item(String title, Integer price, String description, Member member) {
         this.title = title;
         this.price = price;
         this.description = description;
