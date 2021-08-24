@@ -1,15 +1,16 @@
 package com.kisnahc.usedmarket.usedmarket.web.form;
 
-import com.kisnahc.usedmarket.usedmarket.domain.item.UploadImage;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.Lob;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
 public class CreateItemForm {
+
+    private Long itemId;
 
     @Length(max = 80)
     private String title;
@@ -19,6 +20,6 @@ public class CreateItemForm {
     @Lob
     private String description;
 
-    private List<UploadImage> images = new ArrayList<>();
+    private List<MultipartFile> images;
 
 }

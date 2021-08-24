@@ -1,5 +1,6 @@
 package com.kisnahc.usedmarket.usedmarket.domain.item;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ public class UploadImage {
 
     @Id
     @GeneratedValue
+    @Column(name = "image_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -24,5 +26,15 @@ public class UploadImage {
     @Column(nullable = false)
     private String saveImageName;
 
+    @Builder
+    public UploadImage(String uploadImageName, String saveImageName) {
+        this.uploadImageName = uploadImageName;
+        this.saveImageName = saveImageName;
+    }
 
+    public void setItem(Item item) {
+        this.item = item;
+        if (!item.getImages().contains(this))
+            item.getImages().add(this);
+    }
 }

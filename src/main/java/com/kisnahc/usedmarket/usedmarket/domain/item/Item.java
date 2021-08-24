@@ -29,16 +29,24 @@ public class Item extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
+    @OneToMany(mappedBy = "item", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<UploadImage> images = new ArrayList<>();
+
     @Builder
-    public Item(String title, Integer price, String description, Member member) {
+    public Item(String title, Integer price, String description, Member member, List<UploadImage> images) {
         this.title = title;
         this.price = price;
         this.description = description;
         this.member = member;
+        this.images = images;
     }
 
+    public void addImage(UploadImage image) {
+        this.images.add(image);
 
-    @OneToMany(mappedBy = "item")
-    private List<UploadImage> images = new ArrayList<>();
+        if (image.getItem() != this)
+            image.setItem(this);
+    }
+
 
 }
