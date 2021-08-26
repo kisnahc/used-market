@@ -1,5 +1,6 @@
 package com.kisnahc.usedmarket.usedmarket.domain.item;
 
+import com.kisnahc.usedmarket.usedmarket.domain.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
-public class UploadImage {
+public class UploadImage extends BaseTimeEntity {
 
     @Id
     @GeneratedValue
@@ -26,7 +27,6 @@ public class UploadImage {
     @Column(nullable = false)
     private String saveImageName;
 
-    @Builder
     public UploadImage(String uploadImageName, String saveImageName) {
         this.uploadImageName = uploadImageName;
         this.saveImageName = saveImageName;
@@ -34,7 +34,5 @@ public class UploadImage {
 
     public void setItem(Item item) {
         this.item = item;
-        if (!item.getImages().contains(this))
-            item.getImages().add(this);
     }
 }

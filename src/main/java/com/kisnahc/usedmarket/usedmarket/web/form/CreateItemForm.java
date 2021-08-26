@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.Lob;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data

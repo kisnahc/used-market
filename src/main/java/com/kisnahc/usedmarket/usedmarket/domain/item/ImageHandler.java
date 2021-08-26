@@ -1,5 +1,6 @@
 package com.kisnahc.usedmarket.usedmarket.domain.item;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -41,6 +42,7 @@ public class ImageHandler {
         String saveImageName = createSaveFilename(uploadImageName);
         multipartFile.transferTo(new File(getFullPath(saveImageName)));
 
+
         return new UploadImage(uploadImageName, saveImageName);
     }
 
@@ -54,5 +56,4 @@ public class ImageHandler {
         int pos = originalFilename.lastIndexOf(".");
         return originalFilename.substring(pos + 1);
     }
-
 }

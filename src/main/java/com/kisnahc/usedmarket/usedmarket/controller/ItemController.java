@@ -1,8 +1,6 @@
 package com.kisnahc.usedmarket.usedmarket.controller;
 
-import com.kisnahc.usedmarket.usedmarket.domain.item.ImageHandler;
-import com.kisnahc.usedmarket.usedmarket.domain.item.ItemService;
-import com.kisnahc.usedmarket.usedmarket.domain.item.UploadImage;
+import com.kisnahc.usedmarket.usedmarket.domain.item.*;
 import com.kisnahc.usedmarket.usedmarket.domain.member.CurrentMember;
 import com.kisnahc.usedmarket.usedmarket.domain.member.Member;
 import com.kisnahc.usedmarket.usedmarket.web.form.CreateItemForm;
@@ -14,10 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -26,7 +23,6 @@ import java.util.List;
 public class ItemController {
 
     private final ItemService itemService;
-    private final ImageHandler imageHandler;
 
     @GetMapping("/create-item")
     public String createItemForm(Model model) {
@@ -38,13 +34,13 @@ public class ItemController {
     @PostMapping("/create-item")
     public String createItem(@CurrentMember Member member,
                              @Validated @ModelAttribute CreateItemForm form, BindingResult bindingResult) throws IOException {
+
         if (bindingResult.hasErrors()) {
             log.info("error={}", bindingResult);
             return "item/create-item";
         }
 
-
-        itemService.createItem(form, member);
-        return "redirect:/create-item";
+        Item savedItem = itemService.createItem(form, member);
+        return "redirect:/item/{itemId}";
     }
 }
